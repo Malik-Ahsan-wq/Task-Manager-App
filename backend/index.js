@@ -12,6 +12,8 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB error:", err));
 
+app.get("/api/hello", (req, res) => res.json({ message: "Hello, World!" }));
+
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/tasks", require("./routes/tasks"));
 
