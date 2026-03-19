@@ -59,7 +59,9 @@ export default function Tasks() {
     try {
       editId ? await updateTask(token, editId, form) : await createTask(token, form);
       setForm(EMPTY); setEditId(null); setShowForm(false);
-      setPage(1);
+      const newPage = editId ? page : 1;
+      setPage(newPage);
+      load({ page: newPage, limit: LIMIT, search, status: filterStatus, priority: filterPriority, sortByDue });
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong");
     }
