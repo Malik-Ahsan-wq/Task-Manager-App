@@ -38,7 +38,7 @@ export default function Register() {
           </button>
         </div>
         <button style={styles.button} type="submit">Register</button>
-        <p>Already have an account? <Link to="/login">Login</Link></p>
+        <p>Already have an account? <Link to="/login" className="underline">Login</Link></p>
       </form>
     </div>
   );

@@ -39,7 +39,7 @@ export default function Login() {
           </button>
         </div>
         <button style={styles.button} type="submit">Login</button>
-        <p>No account? <Link to="/register">Register</Link></p>
+        <p>No account? <Link to="/register" className="underline">Register</Link></p>
       </form>
     </div>
   );
