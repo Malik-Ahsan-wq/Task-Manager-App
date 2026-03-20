@@ -4,9 +4,21 @@ import { login } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 import EyeIcon from "../components/EyeIcon";
 
+const Spinner = () => (
+  <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+      style={{ animation: "spin 0.6s linear infinite" }}>
+      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+    </svg>
+    Loading...
+    <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+  </span>
+);
+
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPwd, setShowPwd] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { saveAuth } = useAuth();
   const navigate = useNavigate();
@@ -14,12 +26,15 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
     try {
       const { data } = await login(form);
       saveAuth(data.token, data.user);
       navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -38,7 +53,9 @@ export default function Login() {
             <EyeIcon visible={showPwd} />
           </button>
         </div>
-        <button style={styles.button} type="submit">Login</button>
+        <button style={{ ...styles.button, opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }} type="submit" disabled={loading}>
+          {loading ? <Spinner /> : "Login"}
+        </button>
         <p>No account? <Link to="/register" className="underline">Register</Link></p>
       </form>
     </div>

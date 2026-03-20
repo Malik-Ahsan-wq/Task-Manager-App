@@ -3,20 +3,35 @@ import { useNavigate, Link } from "react-router-dom";
 import { register } from "../api/auth";
 import EyeIcon from "../components/EyeIcon";
 
+const Spinner = () => (
+  <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+      style={{ animation: "spin 0.6s linear infinite" }}>
+      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+    </svg>
+    Loading...
+    <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+  </span>
+);
+
 export default function Register() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [showPwd, setShowPwd] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
     try {
       await register(form);
       navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -37,7 +52,9 @@ export default function Register() {
             <EyeIcon visible={showPwd} />
           </button>
         </div>
-        <button style={styles.button} type="submit">Register</button>
+        <button style={{ ...styles.button, opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }} type="submit" disabled={loading}>
+          {loading ? <Spinner /> : "Register"}
+        </button>
         <p>Already have an account? <Link to="/login" className="underline">Login</Link></p>
       </form>
     </div>
