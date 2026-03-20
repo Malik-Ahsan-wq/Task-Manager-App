@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { register } from "../api/auth";
+import { register, login } from "../api/auth";
+import { useAuth } from "../context/AuthContext";
 import EyeIcon from "../components/EyeIcon";
 
 const Spinner = () => (
@@ -19,6 +20,7 @@ export default function Register() {
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { saveAuth } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -27,7 +29,9 @@ export default function Register() {
     setLoading(true);
     try {
       await register(form);
-      navigate("/login");
+      const { data } = await login({ email: form.email, password: form.password });
+      saveAuth(data.token, data.user);
+      navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
     } finally {
