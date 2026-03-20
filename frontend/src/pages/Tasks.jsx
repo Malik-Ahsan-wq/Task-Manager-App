@@ -82,9 +82,9 @@ export default function Tasks() {
   const handleDelete = async (id) => {
     if (!confirm("Delete this task?")) return;
     await deleteTask(token, id);
-    // If last item on page > 1, go back one page
     const newPage = tasks.length === 1 && page > 1 ? page - 1 : page;
     setPage(newPage);
+    load({ page: newPage, limit: LIMIT, search, status: filterStatus, priority: filterPriority, sortByDue });
   };
 
   const handleCancel = () => { setForm(EMPTY); setEditId(null); setShowForm(false); setError(""); };
