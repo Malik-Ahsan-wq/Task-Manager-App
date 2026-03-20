@@ -91,17 +91,6 @@ export default function Tasks() {
 
   return (
     <div style={s.page}>
-      <style>{`
-        input[type="date"]::-webkit-calendar-picker-indicator {
-          opacity: 1;
-          display: block;
-          cursor: pointer;
-          padding: 2px;
-          filter: invert(0.4);
-        }
-        input[type="date"]::-webkit-date-and-time-value { text-align: left; }
-        input[type="date"] { color-scheme: light; }
-      `}</style>
       {/* Header */}
       <div style={s.header}>
         <h2 style={{ margin: 0 }}>My Tasks <span style={s.totalBadge}>{total}</span></h2>
@@ -166,11 +155,8 @@ export default function Tasks() {
                 <option>High</option>
               </select>
             </div>
-            <div style={s.dateWrap}>
-              <label style={s.dateLabel}>Due Date</label>
-              <input style={{ ...s.input, ...s.dateInput }} type="date" value={form.dueDate}
-                onChange={(e) => setForm({ ...form, dueDate: e.target.value })} />
-            </div>
+            <input style={s.input} type="date" value={form.dueDate}
+              onChange={(e) => setForm({ ...form, dueDate: e.target.value })} />
             <div style={s.row}>
               <button style={s.btnPrimary} type="submit">{editId ? "Update" : "Create"}</button>
               <button style={s.btnGray} type="button" onClick={handleCancel}>Cancel</button>
@@ -254,16 +240,7 @@ const s = {
   overlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100 },
   modal: { background: "#fff", borderRadius: 10, padding: 28, width: "100%", maxWidth: 440, display: "flex", flexDirection: "column", gap: 12 },
   input: { padding: "9px 12px", fontSize: 14, border: "1px solid #d1d5db", borderRadius: 6, width: "100%", boxSizing: "border-box" },
-  dateWrap: { display: "flex", flexDirection: "column", gap: 4 },
-  dateLabel: { fontSize: 12, color: "#6b7280", fontWeight: 500, paddingLeft: 2 },
-  dateInput: {
-    appearance: "none",
-    WebkitAppearance: "none",
-    MozAppearance: "none",
-    paddingRight: 12,
-    minHeight: 40,
-    color: "#111827",
-  },
+  row: { display: "flex", gap: 10 },
   error: { color: "#dc2626", fontSize: 13, margin: 0 },
   pagination: { display: "flex", justifyContent: "center", gap: 6, marginTop: 24, flexWrap: "wrap" },
   pageBtn: { padding: "6px 12px", border: "1px solid #d1d5db", borderRadius: 6, background: "#fff", cursor: "pointer", fontSize: 13 },
